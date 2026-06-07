@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Services — Neetu Sodhi</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:           #F5F3EE;
+    --bg-card:      #FFFFFF;
+    --black:        #050505;
+    --body-text:    #111111;
+    --mid-text:     #222222;
+    --light-text:   #555555;
+    --border:       #D8D4CB;
+    --green:        #1C4A00;
+    --green-mid:    #2D6A00;
+    --green-card:   #162E00;
+    --green-light:  #DCE9CC;
+    --green-bright: #AAFF00;
+    --bg-dark:      #030303;
+    --white:        #FFFFFF;
+  }
+
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--black);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.4rem 5rem;
+    background: rgba(245,243,238,0.96);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 21px; font-weight: 400; color: var(--black);
+    letter-spacing: 0.02em;
+  }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--light-text); text-decoration: none; transition: color .25s;
+  }
+  .nav-links a:hover { color: var(--black); }
+  .nav-links a.active { color: var(--green); border-bottom: 1.5px solid var(--green); padding-bottom: 3px; }
+
+  /* HERO */
+  .hero-wrap { background: var(--bg); border-bottom: 1px solid var(--border); }
+  .hero { padding: 11rem 5rem 7rem; max-width: 1180px; margin: 0 auto; }
+  .hero-label {
+    font-size: 11px; letter-spacing: 0.32em; text-transform: uppercase;
+    color: var(--green-mid); margin-bottom: 2.5rem; font-weight: 500;
+    opacity: 0; animation: up .7s ease forwards .1s;
+  }
+  .hero-headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(56px, 7.5vw, 100px);
+    font-weight: 300; line-height: 1.04; color: var(--black);
+    max-width: 860px; margin-bottom: 3.5rem;
+    opacity: 0; animation: up .7s ease forwards .25s;
+  }
+  .hero-headline em { font-style: italic; color: var(--green); }
+  .hero-bottom {
+    display: flex; align-items: flex-start; gap: 5rem;
+    opacity: 0; animation: up .7s ease forwards .4s;
+  }
+  .hero-sub {
+    font-size: 17px; color: var(--mid-text); line-height: 1.9;
+    max-width: 480px;
+    border-left: 3px solid var(--green);
+    padding-left: 1.75rem;
+  }
+  .hero-chips { display: flex; gap: .75rem; flex-wrap: wrap; margin-left: auto; padding-top: .5rem; }
+  .chip {
+    font-size: 11px; letter-spacing: .15em; text-transform: uppercase;
+    color: var(--green); border: 1.5px solid var(--green);
+    padding: 9px 20px; border-radius: 30px;
+    background: var(--green-light); font-weight: 500;
+  }
+
+  /* SECTION */
+  .section { max-width: 1180px; margin: 0 auto; padding: 6rem 5rem; }
+  .s-header {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding-bottom: 1.5rem; border-bottom: 1.5px solid var(--border);
+    margin-bottom: 4rem;
+  }
+  .s-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px; letter-spacing: .22em; text-transform: uppercase;
+    color: var(--light-text);
+  }
+  .s-count { font-size: 13px; letter-spacing: .15em; color: var(--light-text); }
+
+  /* SERVICE CARD */
+  .svc-card {
+    background: var(--bg-card);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 2.5rem;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,.06);
+    opacity: 0; transform: translateY(22px);
+    transition: opacity .6s ease, transform .6s ease, border-color .3s, box-shadow .3s;
+  }
+  .svc-card.show { opacity: 1; transform: translateY(0); }
+  .svc-card:hover {
+    border-color: var(--green-mid);
+    box-shadow: 0 12px 48px rgba(28,74,0,.12);
+  }
+
+  .card-head {
+    display: grid; grid-template-columns: 320px 1fr;
+    border-bottom: 1.5px solid var(--border);
+  }
+  .card-id {
+    padding: 3.5rem;
+    background: var(--green-card);
+    border-right: 1px solid rgba(170,255,0,0.12);
+    display: flex; flex-direction: column; justify-content: space-between;
+  }
+  .card-num {
+    font-size: 11px; letter-spacing: .28em; text-transform: uppercase;
+    color: var(--green-bright); opacity: .9; font-weight: 400;
+  }
+  .card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 68px; font-weight: 300; line-height: 1.0;
+    color: #FFFFFF; margin: 2.5rem 0 1.25rem;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+  }
+  .card-strap {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px; font-style: italic;
+    color: rgba(255,255,255,0.75); line-height: 1.65;
+  }
+  .card-intro {
+    padding: 3.5rem;
+    font-size: 16px; color: var(--mid-text); line-height: 2.0;
+  }
+
+  .card-body {
+    display: grid; grid-template-columns: 1fr 1fr;
+    border-top: 1.5px solid var(--border);
+  }
+  .col { padding: 3rem 3.5rem; }
+  .col:first-child { border-right: 1.5px solid var(--border); }
+  .col-label {
+    font-size: 10px; letter-spacing: .3em; text-transform: uppercase;
+    color: var(--light-text); margin-bottom: 1.75rem; font-weight: 500;
+  }
+  .col-list { list-style: none; }
+  .col-list li {
+    font-size: 15px; color: var(--body-text);
+    padding: .75rem 0; border-bottom: 1px solid #ECEAE4;
+    display: flex; align-items: center; gap: .9rem;
+    transition: color .2s; line-height: 1.5; font-weight: 400;
+  }
+  .col-list li:last-child { border-bottom: none; }
+  .col-list li:hover { color: var(--black); }
+  .col-list li::before {
+    content: '';
+    width: 16px; height: 1.5px;
+    background: var(--green-mid); flex-shrink: 0;
+  }
+
+  .card-foot {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.25rem 3.5rem;
+    background: var(--green-light);
+    border-top: 1px solid #C0D8A8;
+  }
+  .foot-label {
+    font-size: 11px; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--green); font-weight: 500;
+  }
+  .foot-badge {
+    font-size: 10px; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--green); border: 1.5px solid var(--green-mid);
+    padding: 6px 16px; border-radius: 20px; font-weight: 500;
+  }
+
+  /* PROCESS — premium dark section */
+  .process-wrap { background: var(--bg-dark); }
+  .process-inner { max-width: 1180px; margin: 0 auto; padding: 9rem 5rem; }
+
+  .p-top {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 4rem; align-items: end;
+    margin-bottom: 5rem;
+    padding-bottom: 4rem;
+    border-bottom: 1px solid #1A1A1A;
+  }
+  .p-headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(44px, 5vw, 68px);
+    font-weight: 300; color: #FFFFFF; line-height: 1.08;
+  }
+  .p-headline em { font-style: italic; color: var(--green-bright); }
+  .p-right-text {
+    font-size: 16px; color: #AAAAAA; line-height: 1.9;
+    padding-left: 2rem;
+    border-left: 1px solid #2A2A2A;
+  }
+
+  .p-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    background: #161616;
+    border: 1px solid #1E1E1E;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  .p-step {
+    background: #0A0A0A;
+    padding: 4rem;
+    transition: background .35s;
+    position: relative;
+  }
+  .p-step::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 1px; height: 100%;
+    background: #1E1E1E;
+  }
+  .p-step:last-child::after { display: none; }
+  .p-step:hover { background: #0F0F0F; }
+
+  .p-num {
+    font-size: 10px; letter-spacing: .35em; text-transform: uppercase;
+    color: var(--green-bright); opacity: .7;
+    margin-bottom: 2.5rem; display: block; font-weight: 400;
+  }
+  .p-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 52px; font-weight: 300; color: #FFFFFF;
+    margin-bottom: 1rem; line-height: 1.05;
+  }
+  .p-desc {
+    font-size: 15px; color: #AAAAAA; line-height: 1.9;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid #1E1E1E;
+    margin-bottom: 2.5rem;
+  }
+  .p-items { list-style: none; }
+  .p-items li {
+    font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
+    color: #666666; padding: .65rem 0;
+    display: flex; align-items: center; gap: .75rem;
+    transition: color .25s;
+    border-bottom: 1px solid #131313;
+  }
+  .p-items li:last-child { border-bottom: none; }
+  .p-items li:hover { color: #BBBBBB; }
+  .p-items li::before {
+    content: ''; width: 14px; height: 1px;
+    background: var(--green-bright); opacity: .45; flex-shrink: 0;
+  }
+
+  /* CTA */
+  .cta-wrap { border-top: 1px solid var(--border); background: var(--bg); }
+  .cta-inner {
+    max-width: 1180px; margin: 0 auto;
+    padding: 9rem 5rem;
+    display: grid; grid-template-columns: 1fr auto;
+    gap: 6rem; align-items: center;
+  }
+  .cta-eyebrow {
+    font-size: 11px; letter-spacing: .32em; text-transform: uppercase;
+    color: var(--green-mid); margin-bottom: 1.75rem; font-weight: 500;
+  }
+  .cta-headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(44px, 5.5vw, 70px);
+    font-weight: 300; color: var(--black); line-height: 1.08; margin-bottom: 1.5rem;
+  }
+  .cta-headline em { font-style: italic; color: var(--green); }
+  .cta-sub { font-size: 16px; color: var(--mid-text); line-height: 1.9; max-width: 480px; }
+  .cta-right { display: flex; flex-direction: column; align-items: flex-end; gap: 1.25rem; flex-shrink: 0; }
+  .cta-btn {
+    display: inline-block;
+    font-size: 11px; letter-spacing: .22em; text-transform: uppercase;
+    background: var(--green); color: #FFFFFF;
+    padding: 20px 44px; border-radius: 4px; text-decoration: none;
+    transition: background .25s, transform .2s; white-space: nowrap; font-weight: 500;
+  }
+  .cta-btn:hover { background: #2D6A00; transform: translateY(-3px); box-shadow: 0 8px 24px rgba(28,74,0,0.2); }
+  .cta-avail {
+    font-size: 10px; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--light-text); text-align: right;
+  }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2.25rem 5rem;
+    display: flex; justify-content: space-between; align-items: center;
+    background: var(--bg);
+  }
+  .f-name { font-family: 'Cormorant Garamond', serif; font-size: 17px; color: var(--light-text); }
+  .f-copy { font-size: 11px; letter-spacing: .12em; color: var(--light-text); }
+
+  @keyframes up {
+    from { opacity: 0; transform: translateY(22px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 960px) {
+    nav { padding: 1.25rem 1.5rem; }
+    .hero { padding: 8rem 1.5rem 4rem; }
+    .hero-bottom { flex-direction: column; gap: 2rem; }
+    .hero-chips { margin-left: 0; }
+    .section { padding: 4rem 1.5rem; }
+    .card-head { grid-template-columns: 1fr; }
+    .card-id { border-right: none; border-bottom: 1px solid rgba(170,255,0,0.1); }
+    .card-body { grid-template-columns: 1fr; }
+    .col:first-child { border-right: none; border-bottom: 1px solid var(--border); }
+    .card-intro { padding: 2.5rem; }
+    .col { padding: 2.5rem; }
+    .process-inner { padding: 5rem 1.5rem; }
+    .p-top { grid-template-columns: 1fr; gap: 2rem; }
+    .p-right-text { padding-left: 0; border-left: none; border-top: 1px solid #1E1E1E; padding-top: 1.5rem; }
+    .p-grid { grid-template-columns: 1fr; }
+    .p-step::after { display: none; }
+    .cta-inner { padding: 5rem 1.5rem; grid-template-columns: 1fr; }
+    .cta-right { align-items: flex-start; }
+    footer { padding: 2rem 1.5rem; flex-direction: column; gap: .75rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-name">Neetu Sodhi</span>
+  <ul class="nav-links">
+    <li><a href="https://website.beacons.ai/neetusodhi">About</a></li>
+    <li><a href="#" class="active">Services</a></li>
+    <li><a href="https://instagram.com/neetusodhiwrites">Instagram</a></li>
+  </ul>
+</nav>
+
+<div class="hero-wrap">
+  <div class="hero">
+    <p class="hero-label">Services — Neetu Sodhi</p>
+    <h1 class="hero-headline">Copy that closes the gap<br>between your offer<br>and your <em>ideal client.</em></h1>
+    <div class="hero-bottom">
+      <p class="hero-sub">Every word is built on deep buyer psychology — not trends, not templates, not guesswork. I help coaches turn strong offers into clients by fixing the real problem: perception.</p>
+      <div class="hero-chips">
+        <span class="chip">Email Copy</span>
+        <span class="chip">Sales Pages</span>
+        <span class="chip">Ads Copy</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="s-header">
+    <span class="s-title">What I offer</span>
+    <span class="s-count">03 services — coaches only</span>
+  </div>
+
+  <div class="svc-card">
+    <div class="card-head">
+      <div class="card-id">
+        <span class="card-num">01 / 03</span>
+        <div>
+          <h2 class="card-title">Email<br>Copy</h2>
+          <p class="card-strap">Emails that feel written for one person — because psychologically, they are.</p>
+        </div>
+      </div>
+      <p class="card-intro">Most coaching emails get opened and forgotten. Yours won't. I write emails built on the exact words your audience uses to describe their own pain — so every message lands like it was written just for them. From cold to curious. From curious to convinced. From convinced to clients.</p>
+    </div>
+    <div class="card-body">
+      <div class="col">
+        <p class="col-label">What's included</p>
+        <ul class="col-list">
+          <li>Welcome & onboarding sequences</li>
+          <li>Launch email campaigns</li>
+          <li>Nurture sequences</li>
+          <li>Re-engagement emails</li>
+          <li>Promotional broadcasts</li>
+        </ul>
+      </div>
+      <div class="col">
+        <p class="col-label">Best for</p>
+        <ul class="col-list">
+          <li>Building trust with cold audiences</li>
+          <li>Nurturing leads before a launch</li>
+          <li>Coaching program enrollments</li>
+          <li>Staying top of mind consistently</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card-foot">
+      <span class="foot-label">Exclusively for coaches</span>
+      <span class="foot-badge">Email Copy</span>
+    </div>
+  </div>
+
+  <div class="svc-card">
+    <div class="card-head">
+      <div class="card-id">
+        <span class="card-num">02 / 03</span>
+        <div>
+          <h2 class="card-title">Sales<br>Pages</h2>
+          <p class="card-strap">A conversation with your buyer's doubts, desires, and decisions.</p>
+        </div>
+      </div>
+      <p class="card-intro">A sales page isn't a features list. It's a mirror your coaching client looks into and thinks — this is exactly what I need. I write pages that don't just explain your program. They speak to every fear, answer every objection, and remove every reason not to take the next step.</p>
+    </div>
+    <div class="card-body">
+      <div class="col">
+        <p class="col-label">What's included</p>
+        <ul class="col-list">
+          <li>Long-form sales pages</li>
+          <li>Short-form landing pages</li>
+          <li>Webinar registration pages</li>
+          <li>Lead magnet opt-in pages</li>
+          <li>Challenge sign-up pages</li>
+        </ul>
+      </div>
+      <div class="col">
+        <p class="col-label">Best for</p>
+        <ul class="col-list">
+          <li>High-ticket coaching offers</li>
+          <li>Group program launches</li>
+          <li>Course & membership enrollments</li>
+          <li>1:1 coaching applications</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card-foot">
+      <span class="foot-label">Exclusively for coaches</span>
+      <span class="foot-badge">Sales Pages</span>
+    </div>
+  </div>
+
+  <div class="svc-card">
+    <div class="card-head">
+      <div class="card-id">
+        <span class="card-num">03 / 03</span>
+        <div>
+          <h2 class="card-title">Ads<br>Copy</h2>
+          <p class="card-strap">Stop the right person. Speak to their exact pain. Make the click feel inevitable.</p>
+        </div>
+      </div>
+      <p class="card-intro">Scroll-stopping isn't the goal — conversion is. I write ads that find your ideal coaching client in the feed, speak directly to what they're already feeling underneath, and make taking the next step feel like the only logical choice. Built on research, not assumptions.</p>
+    </div>
+    <div class="card-body">
+      <div class="col">
+        <p class="col-label">What's included</p>
+        <ul class="col-list">
+          <li>Meta (Facebook & Instagram) ads</li>
+          <li>Ad hooks and headlines</li>
+          <li>A/B testing copy variations</li>
+          <li>Retargeting ad copy</li>
+        </ul>
+      </div>
+      <div class="col">
+        <p class="col-label">Best for</p>
+        <ul class="col-list">
+          <li>Cold traffic campaigns</li>
+          <li>Lead generation for coaches</li>
+          <li>Webinar & challenge registrations</li>
+          <li>Retargeting warm audiences</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card-foot">
+      <span class="foot-label">Exclusively for coaches</span>
+      <span class="foot-badge">Ads Copy</span>
+    </div>
+  </div>
+</div>
+
+<!-- PROCESS -->
+<div class="process-wrap">
+  <div class="process-inner">
+    <div class="p-top">
+      <h2 class="p-headline">Before writing<br>a single word,<br><em>I study everything.</em></h2>
+      <p class="p-right-text">The same three-step process runs on every single project — no exceptions, no shortcuts. Most copywriters write first and research later. I never do. The research is the work. The writing is just the output of understanding your buyer more deeply than they understand themselves.</p>
+    </div>
+    <div class="p-grid">
+      <div class="p-step">
+        <span class="p-num">01 — Understand</span>
+        <h3 class="p-name">Understand</h3>
+        <p class="p-desc">I learn your coaching business inside out before a single word is written. Your offer, your voice, your market — I need to know it all before I can say anything worth reading.</p>
+        <ul class="p-items">
+          <li>Offer & program structure</li>
+          <li>Positioning</li>
+          <li>Brand voice</li>
+          <li>Market & competitors</li>
+        </ul>
+      </div>
+      <div class="p-step">
+        <span class="p-num">02 — Research</span>
+        <h3 class="p-name">Research</h3>
+        <p class="p-desc">I study the people behind the purchase — not just the purchase itself. Their exact language, their real fears, the objections they won't say out loud. This is where great copy is actually found.</p>
+        <ul class="p-items">
+          <li>Audience language</li>
+          <li>Motivations & desires</li>
+          <li>Objections & fears</li>
+          <li>Decision-making patterns</li>
+        </ul>
+      </div>
+      <div class="p-step">
+        <span class="p-num">03 — Validate</span>
+        <h3 class="p-name">Validate</h3>
+        <p class="p-desc">I test before scaling — because the market always knows best. Every decision is data-driven, not assumed. Strong messaging isn't written once. It's refined until it's right.</p>
+        <ul class="p-items">
+          <li>Message testing</li>
+          <li>Offer testing</li>
+          <li>Audience feedback</li>
+          <li>Data-driven refinements</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-wrap">
+  <div class="cta-inner">
+    <div>
+      <p class="cta-eyebrow">Let's work together</p>
+      <h2 class="cta-headline">Ready to make your<br>coaching offer <em>impossible<br>to ignore?</em></h2>
+      <p class="cta-sub">DM me on Instagram and let's figure out exactly where your messaging needs work.</p>
+    </div>
+    <div class="cta-right">
+      <a href="https://instagram.com/neetusodhiwrites" class="cta-btn">DM me on Instagram</a>
+      <p class="cta-avail">Currently accepting new clients — Q3 2026</p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span class="f-name">Neetu Sodhi</span>
+  <span class="f-copy">©2026 All Rights Reserved</span>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('show'), i * 150);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.svc-card').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
