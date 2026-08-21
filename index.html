@@ -43,7 +43,7 @@ header{border-bottom:1px solid var(--line);padding:20px 0}
 /* HERO */
 .hero{padding:100px 0 70px;border-bottom:1px solid var(--line)}
 .eyebrow{margin-bottom:22px}
-.hero h1{font-size:clamp(1.16rem,2.1vw,2rem);max-width:820px}
+.hero h1{font-size:clamp(1.7rem,3.2vw,2.5rem);max-width:900px}
 .hero h1 em{display:block}
 
 /* HERO SERVICE NAV */
@@ -91,19 +91,26 @@ header{border-bottom:1px solid var(--line);padding:20px 0}
 .flag-side .btn{margin-top:28px;width:100%}
 
 /* OTHER SERVICES */
-.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.service-card{background:var(--panel);border:1px solid var(--line);padding:28px;display:flex;flex-direction:column;transition:.2s ease}
-.service-card:hover{border-color:var(--line-lime);transform:translateY(-3px)}
-.service-num{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--lime)}
-.service-card h3{font-size:2.1rem;margin:24px 0 6px}
-.service-card .tagline{font-family:'Playfair Display',serif;font-style:italic;color:var(--muted);font-size:.92rem;margin-bottom:16px}
-.service-card .desc{font-size:.82rem}
-.col-heads{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px;padding-top:18px;border-top:1px solid var(--line)}
+.services-grid{display:grid;grid-template-columns:1fr;gap:32px}
+.service-card{background:var(--panel);border:1px solid var(--line);display:grid;grid-template-columns:.72fr 1.28fr;grid-template-rows:auto auto auto;overflow:hidden;transition:.2s ease}
+.service-card:hover{border-color:var(--line-lime)}
+.service-num{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--lime);margin-bottom:24px}
+.service-card h3{font-size:clamp(2.5rem,4vw,3.5rem);margin:0 0 10px}
+.service-card .tagline{font-family:'Playfair Display',serif;font-style:italic;color:var(--muted);font-size:1rem;line-height:1.6;max-width:340px}
+.service-card>.service-num,.service-card>h3,.service-card>.tagline{grid-column:1;padding-left:40px;padding-right:40px}
+.service-card>.service-num{grid-row:1;padding-top:40px}
+.service-card>h3{grid-row:2}
+.service-card>.tagline{grid-row:3;padding-bottom:40px}
+.service-card>.desc{grid-column:2;grid-row:1 / span 3;padding:40px;border-left:1px solid var(--line);font-size:.92rem;line-height:1.75;color:var(--muted);align-self:stretch}
+.col-heads{grid-column:1 / -1;display:grid;grid-template-columns:1fr 1fr;gap:0;margin:0;border-top:1px solid var(--line)}
+.col-heads>div{padding:34px 40px}
+.col-heads>div+div{border-left:1px solid var(--line)}
 .col-heads .mono{color:var(--muted);font-size:.6rem;margin-bottom:10px;display:block}
 .col-heads ul{list-style:none}
-.col-heads li{font-size:.7rem;color:var(--muted);padding:6px 0;line-height:1.4}
+.col-heads li{font-size:.76rem;color:var(--muted);padding:8px 0;line-height:1.4;border-bottom:1px solid rgba(244,241,233,.07)}
+.col-heads li:last-child{border-bottom:0}
 .col-heads li::before{content:'—';color:var(--lime);margin-right:8px}
-.card-foot{margin-top:24px;padding-top:20px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
+.card-foot{grid-column:1 / -1;margin:0;padding:18px 40px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
 .card-price{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--lime);text-transform:uppercase;letter-spacing:.06em}
 .card-price small{color:var(--muted);text-transform:none;letter-spacing:0;font-family:'DM Sans',sans-serif}
 .arrow{color:var(--lime);font-size:1.2rem}
@@ -144,7 +151,7 @@ footer{border-top:1px solid var(--line);padding:24px 0;color:#666;font-size:.65r
 @media(max-width:800px){
   .wrap,.header-inner{width:min(100% - 32px,680px)}
   .hero{padding:70px 0 50px}
-  .hero h1{font-size:clamp(2.35rem,10vw,3.8rem)}
+  .hero h1{font-size:clamp(2.4rem,10vw,4rem)}
   .flag-grid{grid-template-columns:1fr}
   .flag-main{border-right:0;border-bottom:1px solid var(--line);padding:28px}
   .flag-side{padding:28px}
@@ -152,6 +159,11 @@ footer{border-top:1px solid var(--line);padding:24px 0;color:#666;font-size:.65r
   .hero-service-nav{grid-template-columns:1fr;gap:28px}
   .service-links{justify-content:flex-start}
   .services-grid{grid-template-columns:1fr}
+  .service-card{grid-template-columns:1fr;grid-template-rows:auto}
+  .service-card>.service-num,.service-card>h3,.service-card>.tagline{grid-column:1;grid-row:auto;padding-left:28px;padding-right:28px}
+  .service-card>.service-num{padding-top:28px}
+  .service-card>.tagline{padding-bottom:28px}
+  .service-card>.desc{grid-column:1;grid-row:auto;border-left:0;border-top:1px solid var(--line);padding:28px}
   .col-heads{grid-template-columns:1fr}
   .process-head{grid-template-columns:1fr;gap:20px}
   .process-cols{grid-template-columns:1fr}
